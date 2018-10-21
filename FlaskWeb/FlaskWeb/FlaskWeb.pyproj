@@ -40,6 +40,7 @@
     <Folder Include="FlaskWeb\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FlaskWeb\templates\information.html" />
     <Content Include="requirements.txt" />
     <Content Include="FlaskWeb\static\content\bootstrap.css" />
     <Content Include="FlaskWeb\static\content\bootstrap.min.css" />

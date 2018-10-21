@@ -128,8 +128,12 @@ namespace ConsoleAppCHK
                 SID = m["SID"].ToString().Trim().Substring(0, 40);
             }
 
+            Console.WriteLine("Computer name  : {0}", ComName);
+            Console.WriteLine("Operating System   : {0}", OperSys);
+            Console.WriteLine("Manufacturer  : {0}", Manufacturer);
+            Console.WriteLine("SerialNumber : {0}", SerialNumber);
+            Console.WriteLine("SID  : {0}", SID);
 
-            
             Console.WriteLine("IP Address is  :  " + ipaddress);
             Console.WriteLine("IP Cut is  :  " + NetID);
             Console.WriteLine("MAC Address is  :  " + MAC);
@@ -142,11 +146,7 @@ namespace ConsoleAppCHK
             Console.WriteLine("Version is :  " + version);
             Console.WriteLine("Install Date :  " + InstallDate);
             
-            Console.WriteLine("Computer name  : {0}",ComName) ;
-            Console.WriteLine("Operating System   : {0}", OperSys );
-            Console.WriteLine("Manufacturer  : {0}", Manufacturer);
-            Console.WriteLine("SerialNumber : {0}", SerialNumber);
-            Console.WriteLine("SID  : {0}", SID);
+            
             Console.WriteLine();
             Console.WriteLine("Get information finish");
            
@@ -156,21 +156,44 @@ namespace ConsoleAppCHK
                 using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
                 {
                     //ipaddress, MAC, GUID, InstallDate, domain, NtVer, server
-                    w.WriteLine("<H1>Project install PC</H1>");
+                    w.WriteLine("<H1>System Information</H1>");
 
-                    w.WriteLine("<br>Computer Name is  :  " + ComName);
-                    w.WriteLine("<br>SID is  : " + SID);
-                    w.WriteLine("<br>OS is  :  " + OperSys);
-                    w.WriteLine("<br>Group is  :  " + domain);
-                    w.WriteLine("<br>IP Address is  :  " + ipaddress);
-                    w.WriteLine("<br>IP Net ID  :  " + NetID);
-                    w.WriteLine("<br>MAC Address is  :  " + MAC);                    
-                    w.WriteLine("<br>Windows NT version is  :  " + NtVer);                    
-                    w.WriteLine("<br>Product Name is  :  " + productname);
-                    w.WriteLine("<br>Version is :  " + version);
-                    w.WriteLine("<br>GUID is  :  " + GUID);
-                    w.WriteLine("<br>Server AV is  :  " + server);
-                    w.WriteLine("<br><button type = \"button\"> Click Me!</button>");
+                    //w.WriteLine("<br>Computer Name is  :  " + ComName);
+                    //w.WriteLine("<br>Serial Number is  :  " + SerialNumber);
+                    //w.WriteLine("<br>SID is  : " + SID);
+                    //w.WriteLine("<br>Manufacturer  :  " + Manufacturer);
+                    //w.WriteLine("<br>Windows NT version is  :  " + NtVer);
+                    //w.WriteLine("<br>OS is  :  " + OperSys);
+                    //w.WriteLine("<br>Group is  :  " + domain);
+                    //w.WriteLine("<br>IP Address is  :  " + ipaddress);
+                    //w.WriteLine("<br>Net ID  :  " + NetID);
+                    //w.WriteLine("<br>MAC Address is  :  " + MAC);              
+                    //w.WriteLine("<br>Product Name is  :  " + productname);
+                    //w.WriteLine("<br>Version is :  " + version);
+                    //w.WriteLine("<br>GUID is  :  " + GUID);
+                    //w.WriteLine("<br>Server AV is  :  " + server);
+
+                    w.WriteLine("<form action = \"http://127.0.0.1/" + ComName + "/" + SerialNumber + "/" + SID + "/" + Manufacturer + "/" + NtVer + "/" + OperSys + "/" + domain + "/" + ipaddress + "/" + NetID + "/" + MAC + "/" + productname +"/" + version + "/" + GUID + "/" + server +"\" method = \"get\">");
+                    w.WriteLine("<table style=\"width:70%\">");
+                    w.WriteLine("<tr><td>Computer Name </td><td> " + ComName + "</td></tr>");
+                    w.WriteLine("<tr><td>Serial Number </td><td>" + SerialNumber + " </td ></tr> ");
+                    w.WriteLine("<tr><td>SID </td><td> " + SID + "</td></tr>");
+                    w.WriteLine("<tr><td>Manufacturer</td><td> " + Manufacturer + "</td></tr>");
+                    
+                    w.WriteLine("<tr><td>OS</td><td> " + OperSys + "</td></tr>");
+                    w.WriteLine("<tr><td>Windows version</td><td> " + NtVer + "</td></tr>");
+                    w.WriteLine("<tr><td>Group</td><td> " + domain + "</td></tr>");
+                    w.WriteLine("<tr><td>IP Address</td><td> " + ipaddress + "</td></tr>");
+                    w.WriteLine("<tr><td>Net ID </td><td> " + NetID + "</td></tr>");
+                    w.WriteLine("<tr><td>MAC Address </td><td> " + MAC + "</td></tr>");
+                    w.WriteLine("<tr><td>Product Name </td><td> " + productname + "</td></tr>");
+                    w.WriteLine("<tr><td>Version </td><td> " + version + "</td></tr>");
+                    w.WriteLine("<tr><td>GUID </td><td> " + GUID + "</td></tr>");
+                    w.WriteLine("<tr><td>Server AV </td><td> " + server + "</td></tr>");
+                    w.WriteLine("</table>");
+                    w.WriteLine("<button type = \"submit\" formmethod = \"post\" > Submit using POST </ button >");
+                    w.WriteLine("</form >");
+                    
                 }
             }
             System.Diagnostics.Process.Start("ComInfo.html");
