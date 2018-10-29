@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Management;
+using System.Net;
+using System.Net.Sockets;
+using System.ServiceProcess;
 using System.Text;
 using Microsoft.Win32;
 
@@ -8,6 +11,62 @@ namespace ConsoleAppCHK
 {
     class Program
     {
+
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
+
+        static string ReadSubKeyValue(string subKey, string key)
+        {
+            string str = string.Empty;
+            using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(subKey))
+            {
+                if (registryKey != null)
+
+                {
+                    try
+                    {
+                        str = registryKey.GetValue(key).ToString();
+                        registryKey.Close();
+                    }
+                    catch (Exception ex3)
+            {
+               // Console.WriteLine("Exception error with get regkey :" + ex1.ToString());
+            }
+
+                }
+            }
+            return str;
+        }
+        public static String GetWindowsServiceStatus(String SERVICENAME)
+        {
+            ServiceController sc = new ServiceController(SERVICENAME);
+
+            switch (sc.Status)
+            {
+                case ServiceControllerStatus.Running:
+                    return "Running";
+                case ServiceControllerStatus.Stopped:
+                    return "Stopped";
+                case ServiceControllerStatus.Paused:
+                    return "Paused";
+                case ServiceControllerStatus.StopPending:
+                    return "Stopping";
+                case ServiceControllerStatus.StartPending:
+                    return "Starting";
+                default:
+                    return "Status Changing";
+            }
+        }
         static void Main(string[] args)
         {
             string regtry_text = "";
@@ -27,69 +86,50 @@ namespace ConsoleAppCHK
             string NtVer = "";
             string server = "";
             string NetID = "";
+            //string regtry_patch = "SOFTWARE\\Lumension\\LMAgent";
+            string EMSSagentstatus = "";
+            string AVstatus = "";
+            
            
 
             ComName = Environment.MachineName.ToString();
 
             if (Environment.Is64BitOperatingSystem)
             {
-                regtry_text = "SOFTWARE\\WOW6432Node\\TrendMicro\\PC-cillinNTCorp\\CurrentVersion";
+                regtry_text = @"SOFTWARE\WOW6432Node\TrendMicro\PC-cillinNTCorp\CurrentVersion";
             }
             else
             {
-                regtry_text = "SOFTWARE\\TrendMicro\\PC-cillinNTCorp\\CurrentVersion";
+                regtry_text = @"SOFTWARE\TrendMicro\PC-cillinNTCorp\CurrentVersion";
             }
+            
 
-            try
-            {
-
-                RegistryKey regkey = Registry.LocalMachine.OpenSubKey(regtry_text);
-
-
-                if (regkey != null)
-                {
-                    ipaddress = regkey.GetValue("IP").ToString();
-                    NetID = ipaddress.Substring(0, ipaddress.LastIndexOf("."));
-                    MAC = regkey.GetValue("MAC").ToString();
-                    GUID = regkey.GetValue("GUID").ToString();
-                    InstallDate = regkey.GetValue("InstDate").ToString();
-                    domain = regkey.GetValue("Domain").ToString();
-                    NtVer = regkey.GetValue("NtVer").ToString();
-                    server = regkey.GetValue("Server").ToString();
-                }
-                regkey.Close();
-            }
-            catch (Exception ex1)
-            {
-               // Console.WriteLine("Exception error with get regkey :" + ex1.ToString());
-            }
+            ipaddress = ReadSubKeyValue(regtry_text, "IP"); 
+            NetID = ipaddress.Substring(0, ipaddress.LastIndexOf("."));
+            MAC = ReadSubKeyValue(regtry_text, "MAC"); 
+            GUID = ReadSubKeyValue(regtry_text, "GUID"); 
+            InstallDate = ReadSubKeyValue(regtry_text, "InstDate"); 
+            domain = ReadSubKeyValue(regtry_text, "Domain");
+            NtVer = ReadSubKeyValue(regtry_text, "NtVer");
+            server = ReadSubKeyValue(regtry_text, "Server");
+            AVstatus = GetWindowsServiceStatus("ntrtscan");
+            EMSSagentstatus = GetWindowsServiceStatus("EMSS Agent");
 
 
             try
             {
                 RegistryKey masterKey = Registry.LocalMachine.OpenSubKey(regtry_text + "\\Misc.");
-
-
-
                 if (masterKey != null)
                 {
                     version = masterKey.GetValue("ProgramVer").ToString();
                     productname = masterKey.GetValue("ProductName").ToString();
-
                 }
-                masterKey.Close();
-
-                
-
-                //Console.WriteLine("Step  In Press any key to exit.");
-                // Console.ReadKey();
+                masterKey.Close(); 
             }
             catch (Exception ex)
             {
                 //Console.WriteLine("Exception error with create htm :" + ex.ToString());
             }
-
-
 
 
 
@@ -110,6 +150,7 @@ namespace ConsoleAppCHK
             }
 
 
+
             ObjectQuery queryBIOS = new ObjectQuery("SELECT * FROM Win32_BIOS");
             ManagementObjectSearcher searcherBIOS = new ManagementObjectSearcher(scope, queryBIOS);
             ManagementObjectCollection queryCollectionBIOS = searcherBIOS.Get();
@@ -128,6 +169,8 @@ namespace ConsoleAppCHK
                 SID = m["SID"].ToString().Trim().Substring(0, 40);
             }
 
+            
+
             Console.WriteLine("Computer name  : {0}", ComName);
             Console.WriteLine("Operating System   : {0}", OperSys);
             Console.WriteLine("Manufacturer  : {0}", Manufacturer);
@@ -145,6 +188,9 @@ namespace ConsoleAppCHK
             Console.WriteLine("Product Name is  :  " + productname);
             Console.WriteLine("Version is :  " + version);
             Console.WriteLine("Install Date :  " + InstallDate);
+
+            Console.WriteLine("EMSS Agent status:  " + EMSSagentstatus);
+            Console.WriteLine("AV status   :  " + AVstatus);
             
             
             Console.WriteLine();
@@ -172,25 +218,29 @@ namespace ConsoleAppCHK
                     //w.WriteLine("<br>Version is :  " + version);
                     //w.WriteLine("<br>GUID is  :  " + GUID);
                     //w.WriteLine("<br>Server AV is  :  " + server);
-
-                    w.WriteLine("<table style=\"width:70%\">");
-                    w.WriteLine("<tr><td>Computer Name </td><td> " + ComName + "</td></tr>");
-                    w.WriteLine("<tr><td>Serial Number </td><td>" + SerialNumber + " </td ></tr> ");
-                    w.WriteLine("<tr><td>SID </td><td> " + SID + "</td></tr>");
-                    w.WriteLine("<tr><td>Manufacturer</td><td> " + Manufacturer + "</td></tr>");
-                    w.WriteLine("<tr><td>Windows version</td><td> " + NtVer + "</td></tr>");
-                    w.WriteLine("<tr><td>OS</td><td> " + OperSys + "</td></tr>");
                     
-                    w.WriteLine("<tr><td>Group</td><td> " + domain + "</td></tr>");
-                    w.WriteLine("<tr><td>IP Address</td><td> " + ipaddress + "</td></tr>");
-                    w.WriteLine("<tr><td>Net ID </td><td> " + NetID + "</td></tr>");
-                    w.WriteLine("<tr><td>MAC Address </td><td> " + MAC + "</td></tr>");
-                    w.WriteLine("<tr><td>Product Name </td><td> " + productname + "</td></tr>");
-                    w.WriteLine("<tr><td>Version </td><td> " + version + "</td></tr>");
-                    w.WriteLine("<tr><td>GUID </td><td> " + GUID + "</td></tr>");
-                    w.WriteLine("<tr><td>Server AV </td><td> " + server + "</td></tr>");
-                    w.WriteLine("</table>");
-                    w.WriteLine(" <form action = \"http://112.155.190.111/input\" medthod =\"POST\"");
+                    w.WriteLine("<table style=\"width:60%\" border=\"1\">");
+                    w.WriteLine("<tr><td><H5>Computer Name </td><td> " + ComName + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Serial Number </td><td>" + SerialNumber + " </td ></tr> ");
+                    w.WriteLine("<tr><td><H4>SID </td><td> " + SID + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Manufacturer</td><td> " + Manufacturer + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Windows version</td><td> " + NtVer + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>OS</td><td> " + OperSys + "</td></tr>");
+                    
+                    w.WriteLine("<tr><td><H4>Group</td><td> " + domain + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>IP Address</td><td> " + ipaddress + "</td></tr>");
+                    //w.WriteLine("<tr><td>Net ID </td><td> " + NetID + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>MAC Address </td><td> " + MAC + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus Product Name </td><td> " + productname + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus Version </td><td> " + version + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus GUID </td><td> " + GUID + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus Server</td><td> " + server + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus status </td><td> " + AVstatus + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>EMSS Agent status  </td><td> " + EMSSagentstatus + "</td></tr>");
+                    
+
+                   
+                    w.WriteLine(" <form action = \"http://127.0.0.1:5000/input\" medthod =\"POST\">");
                     w.WriteLine("<input type=\"hidden\" name=\"ComName\" value=\""+ ComName+ "\">");
                     w.WriteLine("<input type=\"hidden\" name=\"SerialNumber\" value = \""+SerialNumber+"\">");
                     w.WriteLine("<input type=\"hidden\" name=\"SID\" value = \""+SID+"\">");
@@ -205,8 +255,10 @@ namespace ConsoleAppCHK
                     w.WriteLine("<input type=\"hidden\" name=\"version\" value = \""+version+"\">");
                     w.WriteLine("<input type=\"hidden\" name=\"GUID\" value = \""+GUID+"\">");
                     w.WriteLine("<input type=\"hidden\" name=\"server\" value = \""+server+"\">");
+                   w.WriteLine("</table>");
+                    w.WriteLine("<br><button align=\"center\" type = \"submit\" formmethod = \"post\" > Send Data </ button >");
+                    //w.WriteLine("<button type = \"submit\" formmethod = \"post\" > Send Data </ button >");
                     
-                    w.WriteLine("<button type = \"submit\" formmethod = \"post\" > Send Data </ button >");
                     w.WriteLine("</form >");
                     
                 }
@@ -215,8 +267,9 @@ namespace ConsoleAppCHK
 
 
 
+
             Console.WriteLine("Step Out Press any key to exit.");
-            Console.ReadKey();
+            //Console.ReadKey();
 
 
         }
