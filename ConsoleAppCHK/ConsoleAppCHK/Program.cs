@@ -219,28 +219,28 @@ namespace ConsoleAppCHK
                     //w.WriteLine("<br>GUID is  :  " + GUID);
                     //w.WriteLine("<br>Server AV is  :  " + server);
                     
-                    w.WriteLine("<table style=\"width:60%\" border=\"1\">");
-                    w.WriteLine("<tr><td><H5>Computer Name </td><td> " + ComName + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>Serial Number </td><td>" + SerialNumber + " </td ></tr> ");
-                    w.WriteLine("<tr><td><H4>SID </td><td> " + SID + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>Manufacturer</td><td> " + Manufacturer + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>Windows version</td><td> " + NtVer + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>OS</td><td> " + OperSys + "</td></tr>");
+                    w.WriteLine("<table style=\"width:60%\" border=\"0\">");
+                    w.WriteLine("<tr><td><H5>Computer Name  : </td><td> " + ComName + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Serial Number :  </td><td>" + SerialNumber + " </td ></tr> ");
+                    w.WriteLine("<tr><td><H4>SID :  </td><td> " + SID + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Manufacturer  :  </td><td> " + Manufacturer + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Windows version  :  </td><td> " + NtVer + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>OS  :  </td><td> " + OperSys + "</td></tr>");
                     
-                    w.WriteLine("<tr><td><H4>Group</td><td> " + domain + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>IP Address</td><td> " + ipaddress + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Group  :  </td><td> " + domain + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>IP Address  :  </td><td> " + ipaddress + "</td></tr>");
                     //w.WriteLine("<tr><td>Net ID </td><td> " + NetID + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>MAC Address </td><td> " + MAC + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>Antivirus Product Name </td><td> " + productname + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>Antivirus Version </td><td> " + version + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>Antivirus GUID </td><td> " + GUID + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>Antivirus Server</td><td> " + server + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>Antivirus status </td><td> " + AVstatus + "</td></tr>");
-                    w.WriteLine("<tr><td><H4>EMSS Agent status  </td><td> " + EMSSagentstatus + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>MAC Address  :  </td><td> " + MAC + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus Product  :  </td><td> " + productname + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus Version  :  </td><td> " + version + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus GUID  :  </td><td> " + GUID + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus Server  :  </td><td> " + server + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>Antivirus status  :  </td><td> " + AVstatus + "</td></tr>");
+                    w.WriteLine("<tr><td><H4>EMSS Agent status  :  </td><td> " + EMSSagentstatus + "</td></tr>");
                     
 
                    
-                    w.WriteLine(" <form action = \"http://127.0.0.1:5000/input\" medthod =\"POST\">");
+                    w.WriteLine(" <form action = \"http://122.155.190.111/input\" medthod =\"POST\">");
                     w.WriteLine("<input type=\"hidden\" name=\"ComName\" value=\""+ ComName+ "\">");
                     w.WriteLine("<input type=\"hidden\" name=\"SerialNumber\" value = \""+SerialNumber+"\">");
                     w.WriteLine("<input type=\"hidden\" name=\"SID\" value = \""+SID+"\">");
@@ -256,8 +256,8 @@ namespace ConsoleAppCHK
                     w.WriteLine("<input type=\"hidden\" name=\"GUID\" value = \""+GUID+"\">");
                     w.WriteLine("<input type=\"hidden\" name=\"server\" value = \""+server+"\">");
                    w.WriteLine("</table>");
-                    w.WriteLine("<br><button align=\"center\" type = \"submit\" formmethod = \"post\" > Send Data </ button >");
-                    //w.WriteLine("<button type = \"submit\" formmethod = \"post\" > Send Data </ button >");
+                    w.WriteLine("<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button align=\"center\" type = \"submit\" formmethod = \"post\" > Send Data </ button >");
+                    
                     
                     w.WriteLine("</form >");
                     
