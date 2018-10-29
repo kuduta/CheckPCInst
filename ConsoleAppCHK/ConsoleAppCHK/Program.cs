@@ -173,15 +173,14 @@ namespace ConsoleAppCHK
                     //w.WriteLine("<br>GUID is  :  " + GUID);
                     //w.WriteLine("<br>Server AV is  :  " + server);
 
-                    w.WriteLine("<form action = \"http://127.0.0.1/" + ComName + "/" + SerialNumber + "/" + SID + "/" + Manufacturer + "/" + NtVer + "/" + OperSys + "/" + domain + "/" + ipaddress + "/" + NetID + "/" + MAC + "/" + productname +"/" + version + "/" + GUID + "/" + server +"\" method = \"get\">");
                     w.WriteLine("<table style=\"width:70%\">");
                     w.WriteLine("<tr><td>Computer Name </td><td> " + ComName + "</td></tr>");
                     w.WriteLine("<tr><td>Serial Number </td><td>" + SerialNumber + " </td ></tr> ");
                     w.WriteLine("<tr><td>SID </td><td> " + SID + "</td></tr>");
                     w.WriteLine("<tr><td>Manufacturer</td><td> " + Manufacturer + "</td></tr>");
-                    
-                    w.WriteLine("<tr><td>OS</td><td> " + OperSys + "</td></tr>");
                     w.WriteLine("<tr><td>Windows version</td><td> " + NtVer + "</td></tr>");
+                    w.WriteLine("<tr><td>OS</td><td> " + OperSys + "</td></tr>");
+                    
                     w.WriteLine("<tr><td>Group</td><td> " + domain + "</td></tr>");
                     w.WriteLine("<tr><td>IP Address</td><td> " + ipaddress + "</td></tr>");
                     w.WriteLine("<tr><td>Net ID </td><td> " + NetID + "</td></tr>");
@@ -191,7 +190,23 @@ namespace ConsoleAppCHK
                     w.WriteLine("<tr><td>GUID </td><td> " + GUID + "</td></tr>");
                     w.WriteLine("<tr><td>Server AV </td><td> " + server + "</td></tr>");
                     w.WriteLine("</table>");
-                    w.WriteLine("<button type = \"submit\" formmethod = \"post\" > Submit using POST </ button >");
+                    w.WriteLine(" <form action = \"http://112.155.190.111/input\" medthod =\"POST\"");
+                    w.WriteLine("<input type=\"hidden\" name=\"ComName\" value=\""+ ComName+ "\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"SerialNumber\" value = \""+SerialNumber+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"SID\" value = \""+SID+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"Manufacturer\" value = \""+Manufacturer+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"NtVer\" value = \""+NtVer+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"OperSys\" value = \""+OperSys+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"domain\" value = \""+domain+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"ipaddress\" value = \""+ipaddress+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"NetID\" value = \""+NetID+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"MAC\" value = \""+MAC+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"productname\" value = \""+productname+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"version\" value = \""+version+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"GUID\" value = \""+GUID+"\">");
+                    w.WriteLine("<input type=\"hidden\" name=\"server\" value = \""+server+"\">");
+                    
+                    w.WriteLine("<button type = \"submit\" formmethod = \"post\" > Send Data </ button >");
                     w.WriteLine("</form >");
                     
                 }
