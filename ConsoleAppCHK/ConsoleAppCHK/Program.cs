@@ -241,7 +241,7 @@ namespace ConsoleAppCHK
                     
 
                    
-                    w.WriteLine(" <form action = \"http://122.155.190.111/input\" medthod =\"POST\">");
+                    w.WriteLine(" <form action = \"http://127.0.0.1:5000/input\" medthod =\"POST\">");
                     w.WriteLine("<input type=\"hidden\" name=\"ComName\" value=\""+ ComName+ "\">");
                     w.WriteLine("<input type=\"hidden\" name=\"SerialNumber\" value = \""+SerialNumber+"\">");
                     w.WriteLine("<input type=\"hidden\" name=\"SID\" value = \""+SID+"\">");
