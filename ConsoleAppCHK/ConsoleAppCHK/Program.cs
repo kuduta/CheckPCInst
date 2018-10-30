@@ -102,9 +102,10 @@ namespace ConsoleAppCHK
             {
                 regtry_text = @"SOFTWARE\TrendMicro\PC-cillinNTCorp\CurrentVersion";
             }
-            
 
-            ipaddress = ReadSubKeyValue(regtry_text, "IP"); 
+
+            //ipaddress = ReadSubKeyValue(regtry_text, "IP"); 
+            ipaddress = GetLocalIPAddress();
             NetID = ipaddress.Substring(0, ipaddress.LastIndexOf("."));
             MAC = ReadSubKeyValue(regtry_text, "MAC"); 
             GUID = ReadSubKeyValue(regtry_text, "GUID"); 
